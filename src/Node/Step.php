@@ -144,9 +144,10 @@ class Step
             $status = static::$resultLabels[$this->getResultCode()];
         }
 
+
         return [
             'status' => $status,
-            'error_message' => $this->getException(),
+            'error_message' => $this->getException() == null ? $this->getOutput() : $this->getException(),
             'duration' => $this->getDuration() * 1000 * 1000000,
         ];
     }

@@ -8,6 +8,7 @@ use Vanare\BehatCucumberJsonFormatter\Renderer\RendererInterface;
 use Vanare\BehatCucumberJsonFormatter\Printer\FileOutputPrinter;
 use Behat\Behat\EventDispatcher\Event as BehatEvent;
 use Behat\Behat\Tester\Result;
+use Behat\Behat\Tester\Result\ExecutedStepResult;
 use Behat\Testwork\EventDispatcher\Event as TestworkEvent;
 use Behat\Testwork\Counter\Memory;
 use Behat\Testwork\Counter\Timer;
@@ -470,6 +471,9 @@ class Formatter implements FormatterInterface
         $step->setResult($result);
         $step->setResultCode($result->getResultCode());
         $step->setDuration($this->timer->getSeconds());
+        if ($result instanceof ExecutedStepResult) {
+            $step->setOutput(PHP_EOL . $result->getCallResult()->getStdOut());
+        }
 
         $this->processStep($step, $result);
 
